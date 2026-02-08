@@ -111,6 +111,31 @@ public class Main {
         }
         return -1;
     }
+    // search in rotated sorted array-ii
+    public static boolean searchi(int[] nums, int target) {
+        int low = 0, high = nums.length - 1;
+        while (low <= high) {
+            int mid = low + (high - low) / 2;
+            if (nums[mid] == target) {
+                return true;
+            }
+            // shrink thw window for duplicates
+            if(nums[mid]==nums[low] && nums[mid]==nums[high] ){
+                low++;
+                high--;
+            }
+            else if(nums[low]<=nums[mid]){
+                if(target>=nums[low] && target<nums[mid]){
+                    high=mid-1;
+                }else low=mid+1;
+            }
+            else{
+                if(target > nums[mid] && target<=nums[high]) low=mid+1;             
+            else high=mid-1;
+            }
+        }
+        return false;
+    }
     // find minimum in rotated sorted array
     public static int findMin(int[] nums) {
         int low = 0, high = nums.length - 1;
@@ -123,5 +148,24 @@ public class Main {
             }
         }
         return nums[low];
+    }
+    // single element in a sorted array
+    public static int singleNonDuplicate(int[] nums) {
+        int start=0, end=nums.length-1;
+        while(start<=end){
+            int mid= start + (end-start)/2;
+            if( (mid==0 || nums[mid-1]!= nums[mid] )&& (mid==nums.length-1 || nums[mid]!= nums[mid+1])) 
+             return nums[mid];
+            else if(mid>0 && nums[mid-1]==nums[mid]){
+                int length = mid-start-1;
+                if(length%2==0) start=mid+1;
+                else end=mid-2;
+            }else{
+                int length = end-mid-1;
+                if(length%2==0) end=mid-1;
+                else start=mid+2;
+            }
+        }
+        return -1;
     }
 }
